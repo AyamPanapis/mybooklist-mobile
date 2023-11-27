@@ -32,8 +32,10 @@ Inspired by "MyAnimeList.com" our application will use similiar listing system, 
 ## User Roles
 User can search up books that are available in the app database. User can also look up book general information such as author, publisher, and genre. User can also add books to their reading list, and leave reviews on books they have read. User can also see their and other user's reviews on books. User can also acess their profile to see the reading list.
 
-### Flutter Integration flow with Django
+## Flutter Integration flow with Django
 To integrate the flutter application to our django app, we need to install some dependencies to fetch the data from our web application (for example : pbp_django_auth). We also need to create an API endpoint on django to fetch the JSON data. The API endpoint is needed to send the necessary data between flutter and django. 
+
+[Progress Report](https://docs.google.com/spreadsheets/d/1ecUdBUnTy8FjqNU9iX15yIpQ5jW67C-kj5WiVRn5cic/edit?usp=sharing)
 
 
 
