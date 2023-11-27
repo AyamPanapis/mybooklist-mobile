@@ -19,15 +19,22 @@ Inspired by "MyAnimeList.com" our application will use similiar listing system, 
     Users can leave reviews on certain books, and will be showed publicly.
 
 - <strong>Book Library</strong></br>
-    Books that will be fetched from Google Books API and will be categorized for smooth user experience
+    Books that will be fetched from Midterm Project Website.
 
-- <strong>Top Rated Books</strong></br>
-    A sorted based on ratings ( 1.0 -10.0 ) that will be showed in the interface
+## List Of Modules & Workload distributions
+
+- Main Page - Muhammad Obin Mandalika
+- Book Page (Display Book) - Ardhika Satria 
+- Profile Page - Revaldy Hafizhy Mukhtar
+- Review Page and Authentication - Hezekial
+- Category Page - Rakha Fahim Shahab
 
 ## User Roles
+User can search up books that are available in the app database. User can also look up book general information such as author, publisher, and genre. User can also add books to their reading list, and leave reviews on books they have read. User can also see their and other user's reviews on books. User can also acess their profile to see the reading list.
 
-- Guest
-- User/Curator
+### Flutter Integration flow with Django
+To integrate the flutter application to our django app, we need to install some dependencies to fetch the data from our web application (for example : pbp_django_auth). We also need to create an API endpoint on django to fetch the JSON data. The API endpoint is needed to send the necessary data between flutter and django. 
+
 
 
 <details>
