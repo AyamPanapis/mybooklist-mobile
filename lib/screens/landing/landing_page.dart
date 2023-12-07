@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/landing/item_card.dart';
+import 'package:mybooklistmobile/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -19,6 +20,9 @@ class MyHomePage extends StatelessWidget {
         ),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
+      ),
+      drawer: const Drawer(
+        child: LeftDrawer(),
       ),
       body: SingleChildScrollView(
         // Scrolling wrapper widget
