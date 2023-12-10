@@ -126,27 +126,37 @@ Padding(
             ),
             
             // Review input field
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
-              child: TextField(
-                controller: _reviewController,
-                decoration: InputDecoration(
-                  hintText: 'Submit your review:',
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: _submitReview,
-                  ),
-                ),
-              ),
-            ),
-            // Submit button
-            ElevatedButton(
-              onPressed: _submitReview,
-              child: Text('Submit'),
-            ),
-            
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+  child: TextField(
+    controller: _reviewController,
+    style: TextStyle(color: Colors.white), // This sets the text the user inputs to white
+    decoration: InputDecoration(
+      hintText: 'Submit your review:',
+      hintStyle: TextStyle(color: Colors.white54), // Light white for the hint text
+      border: OutlineInputBorder(),
+      enabledBorder: OutlineInputBorder( // To change the border color when TextField is enabled
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      focusedBorder: OutlineInputBorder( // To change the border color when TextField is focused
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      suffixIcon: IconButton(
+        icon: Icon(Icons.send, color: Colors.white), // Icon color set to white
+        onPressed: _submitReview,
+      ),
+    ),
+  ),
+),
+// Submit button
+ElevatedButton(
+  onPressed: _submitReview,
+  child: Text('Submit', style: TextStyle(color: Colors.white)), // Submit text color set to white
+  style: ElevatedButton.styleFrom(
+    primary: Colors.blue, // Button background color
+  ),
+),
+
             // Reviews header
 Padding(
   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -160,25 +170,35 @@ Padding(
   ),
 ),
 
-            // Display reviews with a border and gap
-            ..._reviews.map((review) => Container(
-              margin: const EdgeInsets.only(bottom: 8.0), // Gap between comments
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade400), // Comment border
-                borderRadius: BorderRadius.circular(5.0), // Rounded corners of the border
-                color: Colors.grey.shade200, // Background color of the container
-              ),
-              child: ListTile(
-                title: Text('${review["username"]} (${DateTime.parse(review["timestamp"]).toLocal().toString()})'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Rating: ${review["rating"]}'), // Assuming you have a 'rating' field
-                    Text(review["review"]),
-                  ],
-                ),
-              ),
-            )).toList(),
+// Display reviews with a border and gap
+..._reviews.map((review) => Container(
+  margin: const EdgeInsets.only(bottom: 8.0), // Gap between comments
+  decoration: BoxDecoration(
+    border: Border.all(color: Colors.white), // White comment border
+    borderRadius: BorderRadius.circular(5.0), // Rounded corners of the border
+    color: Color(0xFF04364A), // Background color of the container set to #04364A
+  ),
+  child: ListTile(
+    title: Text(
+      '${review["username"]} (${DateTime.parse(review["timestamp"]).toLocal().toString()})',
+      style: TextStyle(color: Colors.white), // Set text color to white
+    ),
+    subtitle: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Rating: ${review["rating"]}',
+          style: TextStyle(color: Colors.white), // Set text color to white
+        ),
+        Text(
+          review["review"],
+          style: TextStyle(color: Colors.white), // Set text color to white
+        ),
+      ],
+    ),
+  ),
+)).toList(),
+
           ],
         ),
       ),
