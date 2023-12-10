@@ -1,59 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/landing/item_card.dart';
+import 'package:provider/provider.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   final List<ShopItem> items = [
-    ShopItem("View Items", Icons.checklist, Colors.indigo, "1"),
-    ShopItem("Add Item", Icons.add_shopping_cart, Colors.deepPurple, "2"),
-    ShopItem("Logout", Icons.logout, Colors.deepOrangeAccent, "3"),
+    ShopItem("Profile", Icons.account_circle_outlined, const Color(0xFF64CCC5), "1"),
+    ShopItem("Category", Icons.category_outlined, const Color(0xFF64CCC5), "2"),
+    ShopItem("Logout", Icons.logout, const Color(0xFF64CCC5), "3"),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF001C30),
       appBar: AppBar(
         title: const Text(
-          'Inventory',
+          'MyBookList',
         ),
-        backgroundColor: Colors.indigo,
+        
+        backgroundColor: const Color(0xFF001C30),
         foregroundColor: Colors.white,
       ),
-      drawer: const Drawer(
+            drawer: const Drawer(
         child: LeftDrawer(),
-      ),
+            ),
       body: SingleChildScrollView(
-        // Scrolling wrapper widget
         child: Padding(
-          padding: const EdgeInsets.all(10.0), // Set padding for the page
+          padding: const EdgeInsets.all(10.0),
           child: Column(
-            // Widget to display children vertically
+            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                // Text widget to display text with center alignment and appropriate style
-                child: Text(
-                  'Inventory', // Text indicating the shop name
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+              Stack(
+                children: [
+                  Align(
+                    alignment: const AlignmentDirectional(0.00, 0.00),
+                    child: Image.asset(
+                      'C:/Users/obinn/OneDrive/Pictures/Lovepik_com-401193570-girl-holding-a-book.png',
+                      width: double.infinity,
+                      height: 255,
+                      fit: BoxFit.none,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'MyBookList',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF64CCC5),
+                            fontSize: 55,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Explore new worlds, one book at a time!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF64CCC5),
+                            fontSize: 55,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search Author, Title...',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      icon: Icon(Icons.search),
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ),
-              // Grid layout
               GridView.count(
-                // Container for our cards.
                 primary: true,
                 padding: const EdgeInsets.all(20),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
+                crossAxisSpacing: 50,
+                mainAxisSpacing: 50,
                 crossAxisCount: 3,
                 shrinkWrap: true,
                 children: items.map((ShopItem item) {
-                  // Iteration for each item
                   return ShopCard(item);
                 }).toList(),
               ),
@@ -64,3 +107,5 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+
+
