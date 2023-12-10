@@ -3,6 +3,7 @@ import 'package:mybooklistmobile/screens/auth/login.dart';
 // import 'package:mybooklistmobile/screens/auth/register.dart';
 // import 'package:mybooklistmobile/screens/category/category_page.dart';
 import 'package:mybooklistmobile/screens/landing/landing_page.dart';
+import 'package:mybooklistmobile/screens/book/book_page.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -75,6 +76,13 @@ class LeftDrawer extends StatelessWidget {
               fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
+                        onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookDetailPage(),
+                  ));
+                        }
           ),
           Divider(
             // Add a white divider
