@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/auth/login.dart';
+
+import 'package:mybooklistmobile/screens/category/category_page.dart';
+
 import 'package:mybooklistmobile/screens/landing/landing_page.dart';
 import 'package:mybooklistmobile/screens/book/book_page.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -121,6 +124,13 @@ class LeftDrawer extends StatelessWidget {
               fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CategoryPage(),
+                  ));
+            },
           ),
           Divider(
             color: Colors.white,
