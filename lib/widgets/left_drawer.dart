@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/auth/login.dart';
+
 import 'package:mybooklistmobile/screens/category/category_page.dart';
-// import 'package:mybooklistmobile/screens/auth/register.dart';
-// import 'package:mybooklistmobile/screens/category/category_page.dart';
+
 import 'package:mybooklistmobile/screens/landing/landing_page.dart';
 import 'package:mybooklistmobile/screens/book/book_page.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:mybooklistmobile/models/drawer_models.dart';
+import 'package:mybooklistmobile/screens/profile/profile_page.dart';
 
 class LeftDrawer extends StatelessWidget {
-  const LeftDrawer({super.key});
+  const LeftDrawer({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
     return Drawer(
       backgroundColor: const Color(0xFF176B87),
       child: ListView(
@@ -35,16 +35,36 @@ class LeftDrawer extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                Text(
-                  "See Profile>>",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.black,
-                  ),
-                ),
               ],
             ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProductPage(),
+                ),
+              );
+            },
+            child: ListTile(
+              contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
+              leading: const Icon(Icons.person),
+              iconColor: Colors.white,
+              title: const Text(
+                'See Profile',
+                style: TextStyle(
+                  color: Colors.white, // Set the text color
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Divider(
+            color: Colors.white,
+            thickness: 1,
+            height: 0,
           ),
           ListTile(
             contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
@@ -56,40 +76,40 @@ class LeftDrawer extends StatelessWidget {
               fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
-            // redirect to MyHomePage
             onTap: () {
               Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyHomePage(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ),
+              );
             },
           ),
           Divider(
-            // Add a white divider
             color: Colors.white,
             thickness: 1,
             height: 0,
           ),
           ListTile(
-              contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
-              leading: const Icon(Icons.search),
-              iconColor: Colors.white,
-              title: const Text('Search'),
-              titleTextStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookDetailPage(),
-                    ));
-              }),
+            contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
+            leading: const Icon(Icons.search),
+            iconColor: Colors.white,
+            title: const Text('Search'),
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            ),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookDetailPage(),
+                ),
+              );
+            },
+          ),
           Divider(
-            // Add a white divider
             color: Colors.white,
             thickness: 1,
             height: 0,
@@ -113,7 +133,6 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           Divider(
-            // Add a white divider
             color: Colors.white,
             thickness: 1,
             height: 0,
@@ -128,13 +147,13 @@ class LeftDrawer extends StatelessWidget {
               fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
-            // redirect to ShopFormPage
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginApp(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginApp(),
+                ),
+              );
             },
           ),
         ],
