@@ -3,12 +3,17 @@ import 'package:mybooklistmobile/screens/auth/login.dart';
 // import 'package:mybooklistmobile/screens/auth/register.dart';
 // import 'package:mybooklistmobile/screens/category/category_page.dart';
 import 'package:mybooklistmobile/screens/landing/landing_page.dart';
+import 'package:mybooklistmobile/screens/book/book_page.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:mybooklistmobile/models/drawer_models.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Drawer(
       backgroundColor: const Color(0xFF176B87),
       child: ListView(
@@ -66,16 +71,22 @@ class LeftDrawer extends StatelessWidget {
             height: 0,
           ),
           ListTile(
-            contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
-            leading: const Icon(Icons.search),
-            iconColor: Colors.white,
-            title: const Text('Search'),
-            titleTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+              contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
+              leading: const Icon(Icons.search),
+              iconColor: Colors.white,
+              title: const Text('Search'),
+              titleTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookDetailPage(),
+                    ));
+              }),
           Divider(
             // Add a white divider
             color: Colors.white,
