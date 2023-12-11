@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/auth/login.dart';
-
 import 'package:mybooklistmobile/screens/category/category_page.dart';
-
 import 'package:mybooklistmobile/screens/landing/landing_page.dart';
 import 'package:mybooklistmobile/screens/book/book_page.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -85,16 +83,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
               ],
             ),
           ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProductPage(),
-                ),
-              );
-            },
-            child: ListTile(
+          ListTile(
               contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
               leading: const Icon(Icons.person),
               iconColor: Colors.white,
@@ -106,8 +95,23 @@ class _LeftDrawerState extends State<LeftDrawer> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-          ),
+              onTap: () async {
+                if (request.loggedIn) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductPage(),
+                    ),
+                  );
+                } else {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginApp(),
+                    ),
+                  );
+                }
+              }),
           Divider(
             color: Colors.white,
             thickness: 1,
@@ -171,23 +175,32 @@ class _LeftDrawerState extends State<LeftDrawer> {
             height: 0,
           ),
           ListTile(
-            contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
-            leading: const Icon(Icons.book_sharp),
-            iconColor: Colors.white,
-            title: const Text('Category'),
-            titleTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-            ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryPage(),
-                  ));
-            },
-          ),
+              contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 12),
+              leading: const Icon(Icons.book_sharp),
+              iconColor: Colors.white,
+              title: const Text('Category'),
+              titleTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
+              onTap: () async {
+                if (request.loggedIn) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryPage(),
+                    ),
+                  );
+                } else {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginApp(),
+                    ),
+                  );
+                }
+              }),
           Divider(
             color: Colors.white,
             thickness: 1,
@@ -210,14 +223,25 @@ class _LeftDrawerState extends State<LeftDrawer> {
                 );
               },
             ),
-            onTap: () {
+            onTap: () async {
               if (request.loggedIn) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginApp(),
-                  ),
-                );
+                final response = await request
+                    .logout("http://127.0.0.1:8000/auth/logout_flutter/");
+                String message = response["message"];
+                if (response['status']) {
+                  String uname = response["username"];
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("$message Good bye, $uname."),
+                  ));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("$message"),
+                  ));
+                }
               } else {
                 // Navigate to the login page
                 Navigator.pushReplacement(
