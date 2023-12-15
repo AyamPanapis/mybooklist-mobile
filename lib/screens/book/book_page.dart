@@ -1,29 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mybooklistmobile/models/books.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
-import 'dart:convert';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter UI Challenge',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: BookDetailPage(),
-    );
-  }
-}
 
 class BookDetailPage extends StatefulWidget {
+  final Book book;
+  const BookDetailPage({
+    super.key,
+    required this.book,
+  });
+
   @override
-  _BookDetailPageState createState() => _BookDetailPageState();
+  State<BookDetailPage> createState() => _BookDetailPageState();
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
@@ -48,10 +35,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Details'),
-        backgroundColor: Color(0xFF64CCC5), // Changed AppBar color
+        title: Text(widget.book.fields.title),
+        backgroundColor: const Color(0xFF64CCC5), // Changed AppBar color
       ),
-      drawer: const Drawer( child: LeftDrawer()),
+      drawer: const Drawer(child: LeftDrawer()),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -60,50 +47,72 @@ class _BookDetailPageState extends State<BookDetailPage> {
               height: 300,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage('Your_Book_Cover_Image_URL'),
-                  fit: BoxFit.cover,
+                  image: NetworkImage(widget.book.fields.imageLink),
+                  fit: BoxFit.fitHeight,
                 ),
               ),
             ),
             // Book title and author
             ListTile(
-              title: Text('Harry Potter and the Deathly Hallows'),
-              subtitle: Text('J.K. Rowling'),
-              titleTextStyle: TextStyle(
+              title: Text(
+                widget.book.fields.title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontSize: 30.0, fontWeight: FontWeight.bold),
+              ),
+              subtitle: Column(
+                children: [
+                  Text(
+                    "Author: ${widget.book.fields.author}",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 20.0),
+                  ),
+                  Text(
+                    "Publisher: ${widget.book.fields.publisher}",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 20.0),
+                  ),
+                  Text(
+                    "Category: ${widget.book.fields.categories.toString().split(".").last}",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 20.0),
+                  ),
+                ],
+              ),
+              titleTextStyle: const TextStyle(
                 color: Colors.white,
               ),
-              subtitleTextStyle: TextStyle(
-                color: Colors.white
-              ),
-
+              subtitleTextStyle: const TextStyle(color: Colors.white),
             ),
+
             // Star rating and read count
-Padding(
-  padding: const EdgeInsets.all(8.0),
-  child: Text(
-    '⭐ 4.9 (107.3k)  •  0.27M Read',
-    style: TextStyle(color: Colors.white), // This line sets the text color to white
-  ),
-),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Text(
+            //     '⭐ ${widget.book.rating ?? "n/a"} (${widget.book.ratingsCount ?? "n/a"})',
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //     ), // This line sets the text color to white
+            //   ),
+            // ),
 
             // Genres/tags
-            Wrap(
-              spacing: 8.0,
-              children: <Widget>[
-                Chip(label: Text('Action')),
-                Chip(label: Text('Fantasy')),
-                Chip(label: Text('Supernatural')),
-              ],
-            ),
+            // Wrap(
+            //   spacing: 8.0,
+            //   children: <Widget>[
+            //     Chip(label: Text('Action')),
+            //     Chip(label: Text('Fantasy')),
+            //     Chip(label: Text('Supernatural')),
+            //   ],
+            // ),
             // Description
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Harry Potter and the Deathly Hallows is the seventh and final book in the Harry Potter series by J. K. Rowling...',
+                widget.book.fields.description,
                 textAlign: TextAlign.justify,
-                style: TextStyle(color: Colors.white)
+                style: const TextStyle(color: Colors.white),
               ),
-              
             ),
             // Add to library and read now buttons
             Row(
@@ -111,98 +120,128 @@ Padding(
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Handle add to library
+                    // Handle to read
                   },
-                  child: Text('Add To Library'),
+                  child: const Text('To Read'),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle read now
+                    // Handle reading
                   },
-                  style: ElevatedButton.styleFrom(primary: Colors.blue),
-                  child: Text('Read Now'),
+                  // style: ElevatedButton.styleFrom(primary: Colors.blue),
+                  child: const Text('Reading'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle finish reading
+                  },
+                  // style: ElevatedButton.styleFrom(primary: Colors.blue),
+                  child: const Text('Finish Reading'),
                 ),
               ],
             ),
-            
+
             // Review input field
-Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
-  child: TextField(
-    controller: _reviewController,
-    style: TextStyle(color: Colors.white), // This sets the text the user inputs to white
-    decoration: InputDecoration(
-      hintText: 'Submit your review:',
-      hintStyle: TextStyle(color: Colors.white54), // Light white for the hint text
-      border: OutlineInputBorder(),
-      enabledBorder: OutlineInputBorder( // To change the border color when TextField is enabled
-        borderSide: BorderSide(color: Colors.white),
-      ),
-      focusedBorder: OutlineInputBorder( // To change the border color when TextField is focused
-        borderSide: BorderSide(color: Colors.white),
-      ),
-      suffixIcon: IconButton(
-        icon: Icon(Icons.send, color: Colors.white), // Icon color set to white
-        onPressed: _submitReview,
-      ),
-    ),
-  ),
-),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+              child: TextField(
+                controller: _reviewController,
+                style: const TextStyle(
+                    color: Colors
+                        .white), // This sets the text the user inputs to white
+                decoration: InputDecoration(
+                  hintText: 'Submit your review:',
+                  hintStyle: const TextStyle(
+                      color: Colors.white54), // Light white for the hint text
+                  border: const OutlineInputBorder(),
+                  enabledBorder: const OutlineInputBorder(
+                    // To change the border color when TextField is enabled
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    // To change the border color when TextField is focused
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: const Icon(
+                      Icons.send,
+                      color: Colors.white,
+                    ), // Icon color set to white
+                    onPressed: _submitReview,
+                  ),
+                ),
+              ),
+            ),
 // Submit button
-ElevatedButton(
-  onPressed: _submitReview,
-  child: Text('Submit', style: TextStyle(color: Colors.white)), // Submit text color set to white
-  style: ElevatedButton.styleFrom(
-    primary: Colors.blue, // Button background color
-  ),
-),
+            ElevatedButton(
+              onPressed: _submitReview,
+              // style: ElevatedButton.styleFrom(
+              //   primary: Colors.blue, // Button background color
+              // ),
+              child: const Text(
+                'Submit',
+                style: TextStyle(color: Colors.white),
+              ), // Submit text color set to white
+            ),
 
             // Reviews header
-Padding(
-  padding: const EdgeInsets.symmetric(vertical: 8.0),
-  child: Text(
-    'Reviews:',
-    style: TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.bold,
-      color: Colors.white, // This sets the text color to white
-    ),
-  ),
-),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                'Reviews:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white, // This sets the text color to white
+                ),
+              ),
+            ),
 
 // Display reviews with a border and gap
-..._reviews.map((review) => Container(
-  margin: const EdgeInsets.only(bottom: 8.0), // Gap between comments
-  decoration: BoxDecoration(
-    border: Border.all(color: Colors.white), // White comment border
-    borderRadius: BorderRadius.circular(5.0), // Rounded corners of the border
-    color: Color(0xFF04364A), // Background color of the container set to #04364A
-  ),
-  child: ListTile(
-    title: Text(
-      '${review["username"]} (${DateTime.parse(review["timestamp"]).toLocal().toString()})',
-      style: TextStyle(color: Colors.white), // Set text color to white
-    ),
-    subtitle: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Rating: ${review["rating"]}',
-          style: TextStyle(color: Colors.white), // Set text color to white
-        ),
-        Text(
-          review["review"],
-          style: TextStyle(color: Colors.white), // Set text color to white
-        ),
-      ],
-    ),
-  ),
-)).toList(),
-
+            ..._reviews
+                .map((review) => Container(
+                      margin: const EdgeInsets.only(
+                          bottom: 8.0), // Gap between comments
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.white), // White comment border
+                        borderRadius: BorderRadius.circular(
+                            5.0), // Rounded corners of the border
+                        color: const Color(
+                            0xFF04364A), // Background color of the container set to #04364A
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          '${review["username"]} (${DateTime.parse(review["timestamp"]).toLocal().toString()})',
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ), // Set text color to white
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rating: ${review["rating"]}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ), // Set text color to white
+                            ),
+                            Text(
+                              review["review"],
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ), // Set text color to white
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))
+                .toList(),
           ],
         ),
       ),
-      backgroundColor: Color(0xFF04364A), // Changed background color
+      backgroundColor: const Color(0xFF04364A), // Changed background color
     );
   }
 }
