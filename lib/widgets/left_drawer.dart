@@ -153,12 +153,12 @@ class _LeftDrawerState extends State<LeftDrawer> {
             ),
             onTap: () async {
               if (request.loggedIn) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BookDetailPage(),
-                  ),
-                );
+                //Navigator.pushReplacement(
+                  //context,
+                  //MaterialPageRoute(
+                    //builder: (context) => BookDetailPage(),
+                  //),
+                //);
               } else {
                 Navigator.pushReplacement(
                   context,
