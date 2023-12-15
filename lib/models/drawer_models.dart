@@ -47,6 +47,7 @@ class Fields {
   DateTime dateJoined;
   List<dynamic> groups;
   List<dynamic> userPermissions;
+  int pk;
 
   Fields({
     required this.password,
@@ -61,6 +62,7 @@ class Fields {
     required this.dateJoined,
     required this.groups,
     required this.userPermissions,
+    required this.pk,
   });
 
   factory Fields.fromJson(Map<String, dynamic> json) => Fields(
@@ -79,6 +81,7 @@ class Fields {
         groups: List<dynamic>.from(json["groups"].map((x) => x)),
         userPermissions:
             List<dynamic>.from(json["user_permissions"].map((x) => x)),
+        pk: json["pk"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -94,5 +97,6 @@ class Fields {
         "date_joined": dateJoined.toIso8601String(),
         "groups": List<dynamic>.from(groups.map((x) => x)),
         "user_permissions": List<dynamic>.from(userPermissions.map((x) => x)),
+        "pk": pk,
       };
 }
