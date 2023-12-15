@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/landing/item_card.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
-import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
