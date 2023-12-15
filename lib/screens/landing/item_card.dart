@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mybooklistmobile/screens/auth/login.dart';
+import 'package:mybooklistmobile/screens/category/category_page.dart';
+import 'package:mybooklistmobile/screens/profile/profile_page.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +32,36 @@ class ShopCard extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
                 content: Text("You pressed the ${item.name} button!")));
+
+         // Navigate to the appropriate route (depending on the button type)
+          if (item.name == "Profile") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProductPage(),
+                ));
+          } else if (item.name == "Category") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CategoryPage()));
+          } else if (item.name == "Logout") {
+        final response = await request.logout(
+            "http://127.0.0.1:8000/auth/logout_flutter/");
+        String message = response["message"];
+        if (response['status']) {
+          String uname = response["username"];
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("$message Good bye, $uname."),
+          ));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginApp()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("$message"),
+            ));
+          }
+        }
         },
         child: Container(
           // Container to hold Icon and Text

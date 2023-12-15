@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan.shade400),
             useMaterial3: true,
           ),
-          home: MyHomePage(),
+          home: const LoginApp(),
           routes: {
             '/auth/login_flutter': (context) => const LoginApp(),
             'profile/get-planned-flutter/': (context) => const ProductPage(),
