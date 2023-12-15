@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:mybooklistmobile/models/booklistprofile/readingbooks.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:mybooklistmobile/models/drawer_models.dart';
+
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -35,9 +38,9 @@ class _ProductPageState extends State<ProductPage> {
         backgroundColor: const Color(0xFF001C30),
         body: const TabBarView(
           children: [
-            BookCategoryPage(endpoint: 'get-planned'),
-            BookCategoryPage(endpoint: 'get-reading'),
-            BookCategoryPage(endpoint: 'get-completed'),
+            BookCategoryPage(endpoint: 'get-planned-flutter'),
+            BookCategoryPage(endpoint: 'get-reading-flutter'),
+            BookCategoryPage(endpoint: 'get-completed-flutter'),
           ],
         ),
       ),
@@ -49,40 +52,23 @@ class BookCategoryPage extends StatelessWidget {
 
   const BookCategoryPage({Key? key, required this.endpoint}) : super(key: key);
 
-  Future<List<Product>> fetchProduct() async {
-    try {
-      var url = Uri.parse('http://localhost:8000/profile/$endpoint/');
-      var response = await http.get(
-        url,
-        headers: {"Content-Type": "application/json"},
-      );
+  Future<List<Product>> fetchProduct(CookieRequest request) async {
 
-      print('Response: ${response.body}'); // Add this line for debugging
-
-      if (response.statusCode == 200) {
-        var data = jsonDecode(utf8.decode(response.bodyBytes));
-        List<Product> list_product = [];
-        for (var d in data) {
-          if (d != null) {
-            list_product.add(Product.fromJson(d));
-          }
+    var data = await request.get('http://127.0.0.1:8000/profile/$endpoint/');
+      List<Product> list_product = [];
+      for (var d in data) {
+        if (d != null) {
+          list_product.add(Product.fromJson(d));
         }
-        return list_product;
-      } else {
-        // Handle non-200 status codes
-        throw 'Failed to load data, status code: ${response.statusCode}';
       }
-    } catch (error) {
-      // Handle general errors
-      print('Error fetching data: $error');
-      throw 'Failed to load data';
-    }
+      return list_product;
   }
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return FutureBuilder(
-      future: fetchProduct(),
+      future: fetchProduct(request),
       builder: (context, AsyncSnapshot<List<Product>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

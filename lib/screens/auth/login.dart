@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/auth/register.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:mybooklistmobile/models/drawer_models.dart';
 
 void main() {
   runApp(const LoginApp());
@@ -210,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                                 "http://127.0.0.1:8000/auth/login_flutter/", {
                               'username': username,
                               'password': password,
-                            });
+                            },);
 
                             if (request.loggedIn) {
                               String message = response['message'];
