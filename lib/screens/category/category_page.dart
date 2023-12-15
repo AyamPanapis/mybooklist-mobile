@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mybooklistmobile/models/books.dart';
+import 'package:mybooklistmobile/widgets/left_drawer.dart';
 void main() {
   runApp(CategoryApp());
 }
@@ -49,6 +50,9 @@ class CategoryPage extends StatelessWidget {
         backgroundColor: const Color(0xFF64CCC5),
         foregroundColor: Colors.white,
       ),
+        drawer: const Drawer(
+          child: LeftDrawer(),
+        ),
       body: FutureBuilder(
         future: fetchItem(),
         builder: (context, AsyncSnapshot snapshot) {
@@ -283,6 +287,9 @@ class ArtPage extends StatelessWidget {
           title: Text('Art Page'),
           backgroundColor: const Color(0xFF64CCC5),
           foregroundColor: Colors.white,
+        ),
+        drawer: const Drawer(
+          child: LeftDrawer(),
         ),
         body: FutureBuilder(
             future: fetchItem(),
@@ -519,6 +526,9 @@ class FictionPage extends StatelessWidget {
           backgroundColor: const Color(0xFF64CCC5),
           foregroundColor: Colors.white,
         ),
+        drawer: const Drawer(
+          child: LeftDrawer(),
+        ),
         body: FutureBuilder(
             future: fetchItem(),
             builder: (context, AsyncSnapshot snapshot) {
@@ -753,6 +763,9 @@ class EconomicsPage extends StatelessWidget {
           title: Text('Economics Page'),
           backgroundColor: const Color(0xFF64CCC5),
           foregroundColor: Colors.white,
+        ),
+        drawer: const Drawer(
+          child: LeftDrawer(),
         ),
         body: FutureBuilder(
             future: fetchItem(),
@@ -989,6 +1002,9 @@ class HistoryPage extends StatelessWidget {
           backgroundColor: const Color(0xFF64CCC5),
           foregroundColor: Colors.white,
         ),
+        drawer: const Drawer(
+          child: LeftDrawer(),
+        ),
         body: FutureBuilder(
             future: fetchItem(),
             builder: (context, AsyncSnapshot snapshot) {
@@ -1224,6 +1240,9 @@ class SciencePage extends StatelessWidget {
           backgroundColor: const Color(0xFF64CCC5),
           foregroundColor: Colors.white,
         ),
+        drawer: const Drawer(
+          child: LeftDrawer(),
+        ),
         body: FutureBuilder(
             future: fetchItem(),
             builder: (context, AsyncSnapshot snapshot) {
@@ -1458,6 +1477,9 @@ class PhilosophyPage extends StatelessWidget {
           title: Text('Philosophy Page'),
           backgroundColor: const Color(0xFF64CCC5),
           foregroundColor: Colors.white,
+        ),
+        drawer: const Drawer(
+          child: LeftDrawer(),
         ),
         body: FutureBuilder(
             future: fetchItem(),
