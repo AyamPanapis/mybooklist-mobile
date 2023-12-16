@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mybooklistmobile/models/books.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
+import 'package:mybooklistmobile/screens/book/book_page.dart';
+
 void main() {
   runApp(CategoryApp());
 }
@@ -22,8 +24,7 @@ class CategoryApp extends StatelessWidget {
 
 class CategoryPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse(
-        'http://localhost:8000/xml/json/');
+    var url = Uri.parse('http://localhost:8000/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -45,223 +46,250 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF232831),
-      appBar: AppBar(
-        title: Text('Category Page'),
-        backgroundColor: const Color(0xFF64CCC5),
-        foregroundColor: Colors.white,
-      ),
+        appBar: AppBar(
+          title: Text('Category Page'),
+          backgroundColor: const Color(0xFF64CCC5),
+          foregroundColor: Colors.white,
+        ),
         drawer: const Drawer(
           child: LeftDrawer(),
         ),
-      body: FutureBuilder(
-        future: fetchItem(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            if (!snapshot.hasData) {
-              return const Column(
-                children: [
-                  Text(
-                    "No item data available.",
-                    style:
-                    TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
-                  ),
-                  SizedBox(height: 8),
-                ],
-              );
-            } else {
-              return Column(
-                children: <Widget>[
-                  // Category buttons
-                    Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => CategoryPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text('All'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF232831),
-                                      foregroundColor: Colors.white,
-                                        side: const BorderSide(
-                                          color: Color(0xFF64CCC5)
-                                        )
-                                    )
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => EconomicsPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text('Economics'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF64CCC5),
-                                        foregroundColor: Colors.white,
-                                      )
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // Second row with 3 buttons
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => FictionPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text('Fiction'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF64CCC5),
-                                        foregroundColor: Colors.white,
-                                      )
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ArtPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text('Art'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF64CCC5),
-                                        foregroundColor: Colors.white,
-                                      )
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => HistoryPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text('History'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF64CCC5),
-                                        foregroundColor: Colors.white,
-                                      )
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // Third row with 2 buttons
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SciencePage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text('Science'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF64CCC5),
-                                        foregroundColor: Colors.white,
-                                      )
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => PhilosophyPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text('Philosophy'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF64CCC5),
-                                        foregroundColor: Colors.white,
-                                      )
-                                  ),
-                                ),
-                              ],
-                            ),]
+        body: FutureBuilder(
+            future: fetchItem(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                if (!snapshot.hasData) {
+                  return const Column(
+                    children: [
+                      Text(
+                        "No item data available.",
+                        style:
+                            TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
                       ),
-                    ),
-                  // Scrollable Image Grid
-                  Expanded(
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(4.0),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 1 / 1,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
+                      SizedBox(height: 8),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: <Widget>[
+                      // Category buttons
+                      Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CategoryPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('All'),
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                const Color(0xFF232831),
+                                            foregroundColor: Colors.white,
+                                            side: const BorderSide(
+                                                color: Color(0xFF64CCC5)))),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EconomicsPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('Economics'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
+                                          foregroundColor: Colors.white,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              // Second row with 3 buttons
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FictionPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('Fiction'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
+                                          foregroundColor: Colors.white,
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ArtPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('Art'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
+                                          foregroundColor: Colors.white,
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HistoryPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('History'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
+                                          foregroundColor: Colors.white,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              // Third row with 2 buttons
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SciencePage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('Science'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
+                                          foregroundColor: Colors.white,
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PhilosophyPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('Philosophy'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
+                                          foregroundColor: Colors.white,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ]),
                       ),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        // In a real app, you would load images from a service or local assets.
-                        return InkWell(
-                          onTap: () {
-
+                      // Scrollable Image Grid
+                      Expanded(
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(4.0),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 1 / 1.5,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            // In a real app, you would load images from a service or local assets.
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(
+                                        book: snapshot.data![index]),
+                                  ),
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data![index].fields.imageLink,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          2), // Adjust the spacing between image and text
+                                  Text(
+                                    snapshot.data![index].fields.title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            );
                           },
-                          child: Image.network(snapshot.data![index].fields.imageLink, fit: BoxFit.cover),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              );
-            }
-          }
-        }
-    )
-    );
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }
+            }));
   }
 }
 
 class ArtPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse(
-        'http://localhost:8000/xml/json/');
+    var url = Uri.parse('http://localhost:8000/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -273,12 +301,13 @@ class ArtPage extends StatelessWidget {
     List<Book> list_book_art = [];
     for (var d in data) {
       if (d != null) {
-        if(d['fields']['categories'] == 'Art')
+        if (d['fields']['categories'] == 'Art')
           list_book_art.add(Book.fromJson(d));
       }
     }
     return list_book_art;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -303,7 +332,7 @@ class ArtPage extends StatelessWidget {
                       Text(
                         "No item data available.",
                         style:
-                        TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
+                            TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -326,16 +355,17 @@ class ArtPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => CategoryPage(),
+                                              builder: (context) =>
+                                                  CategoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('All'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -344,16 +374,17 @@ class ArtPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => EconomicsPage(),
+                                              builder: (context) =>
+                                                  EconomicsPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Economics'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -368,16 +399,17 @@ class ArtPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FictionPage(),
+                                              builder: (context) =>
+                                                  FictionPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Fiction'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -392,13 +424,11 @@ class ArtPage extends StatelessWidget {
                                         },
                                         child: Text('Art'),
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color(0xFF232831),
+                                            backgroundColor:
+                                                const Color(0xFF232831),
                                             foregroundColor: Colors.white,
                                             side: const BorderSide(
-                                                color: Color(0xFF64CCC5)
-                                            )
-                                        )
-                                    ),
+                                                color: Color(0xFF64CCC5)))),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -407,16 +437,17 @@ class ArtPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => HistoryPage(),
+                                              builder: (context) =>
+                                                  HistoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('History'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -431,16 +462,17 @@ class ArtPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => SciencePage(),
+                                              builder: (context) =>
+                                                  SciencePage(),
                                             ),
                                           );
                                         },
                                         child: Text('Science'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -449,28 +481,30 @@ class ArtPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => PhilosophyPage(),
+                                              builder: (context) =>
+                                                  PhilosophyPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Philosophy'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
-                              ),]
-                        ),
+                              ),
+                            ]),
                       ),
                       // Scrollable Image Grid
                       Expanded(
                         child: GridView.builder(
                           padding: const EdgeInsets.all(4.0),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 1 / 1,
+                            childAspectRatio: 1 / 1.5,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                           ),
@@ -479,9 +513,34 @@ class ArtPage extends StatelessWidget {
                             // In a real app, you would load images from a service or local assets.
                             return InkWell(
                               onTap: () {
-
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(
+                                        book: snapshot.data![index]),
+                                  ),
+                                );
                               },
-                              child: Image.network(snapshot.data![index].fields.imageLink, fit: BoxFit.cover),
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data![index].fields.imageLink,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          2), // Adjust the spacing between image and text
+                                  Text(
+                                    snapshot.data![index].fields.title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -490,16 +549,13 @@ class ArtPage extends StatelessWidget {
                   );
                 }
               }
-            }
-        )
-    );
+            }));
   }
 }
 
 class FictionPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse(
-        'http://localhost:8000/xml/json/');
+    var url = Uri.parse('http://localhost:8000/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -511,12 +567,13 @@ class FictionPage extends StatelessWidget {
     List<Book> list_book_art = [];
     for (var d in data) {
       if (d != null) {
-        if(d['fields']['categories'] == 'Fiction')
+        if (d['fields']['categories'] == 'Fiction')
           list_book_art.add(Book.fromJson(d));
       }
     }
     return list_book_art;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -541,7 +598,7 @@ class FictionPage extends StatelessWidget {
                       Text(
                         "No item data available.",
                         style:
-                        TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
+                            TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -564,16 +621,17 @@ class FictionPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => CategoryPage(),
+                                              builder: (context) =>
+                                                  CategoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('All'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -582,16 +640,17 @@ class FictionPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => EconomicsPage(),
+                                              builder: (context) =>
+                                                  EconomicsPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Economics'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -606,19 +665,18 @@ class FictionPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FictionPage(),
+                                              builder: (context) =>
+                                                  FictionPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Fiction'),
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color(0xFF232831),
+                                            backgroundColor:
+                                                const Color(0xFF232831),
                                             foregroundColor: Colors.white,
                                             side: const BorderSide(
-                                                color: Color(0xFF64CCC5)
-                                            )
-                                        )
-                                    ),
+                                                color: Color(0xFF64CCC5)))),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -633,10 +691,10 @@ class FictionPage extends StatelessWidget {
                                         },
                                         child: Text('Art'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -645,16 +703,17 @@ class FictionPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => HistoryPage(),
+                                              builder: (context) =>
+                                                  HistoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('History'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -669,16 +728,17 @@ class FictionPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => SciencePage(),
+                                              builder: (context) =>
+                                                  SciencePage(),
                                             ),
                                           );
                                         },
                                         child: Text('Science'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -687,28 +747,30 @@ class FictionPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => PhilosophyPage(),
+                                              builder: (context) =>
+                                                  PhilosophyPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Philosophy'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
-                              ),]
-                        ),
+                              ),
+                            ]),
                       ),
                       // Scrollable Image Grid
                       Expanded(
                         child: GridView.builder(
                           padding: const EdgeInsets.all(4.0),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 1 / 1,
+                            childAspectRatio: 1 / 1.5,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                           ),
@@ -717,9 +779,34 @@ class FictionPage extends StatelessWidget {
                             // In a real app, you would load images from a service or local assets.
                             return InkWell(
                               onTap: () {
-
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(
+                                        book: snapshot.data![index]),
+                                  ),
+                                );
                               },
-                              child: Image.network(snapshot.data![index].fields.imageLink, fit: BoxFit.cover),
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data![index].fields.imageLink,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          2), // Adjust the spacing between image and text
+                                  Text(
+                                    snapshot.data![index].fields.title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -728,16 +815,13 @@ class FictionPage extends StatelessWidget {
                   );
                 }
               }
-            }
-        )
-    );
+            }));
   }
 }
 
 class EconomicsPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse(
-        'http://localhost:8000/xml/json/');
+    var url = Uri.parse('http://localhost:8000/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -749,12 +833,13 @@ class EconomicsPage extends StatelessWidget {
     List<Book> list_book_art = [];
     for (var d in data) {
       if (d != null) {
-        if(d['fields']['categories'] == 'Economics')
+        if (d['fields']['categories'] == 'Economics')
           list_book_art.add(Book.fromJson(d));
       }
     }
     return list_book_art;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -779,7 +864,7 @@ class EconomicsPage extends StatelessWidget {
                       Text(
                         "No item data available.",
                         style:
-                        TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
+                            TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -802,16 +887,17 @@ class EconomicsPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => CategoryPage(),
+                                              builder: (context) =>
+                                                  CategoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('All'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -820,19 +906,18 @@ class EconomicsPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => EconomicsPage(),
+                                              builder: (context) =>
+                                                  EconomicsPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Economics'),
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color(0xFF232831),
+                                            backgroundColor:
+                                                const Color(0xFF232831),
                                             foregroundColor: Colors.white,
                                             side: const BorderSide(
-                                                color: Color(0xFF64CCC5)
-                                            )
-                                        )
-                                    ),
+                                                color: Color(0xFF64CCC5)))),
                                   ),
                                 ],
                               ),
@@ -847,16 +932,17 @@ class EconomicsPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FictionPage(),
+                                              builder: (context) =>
+                                                  FictionPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Fiction'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -871,10 +957,10 @@ class EconomicsPage extends StatelessWidget {
                                         },
                                         child: Text('Art'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -883,16 +969,17 @@ class EconomicsPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => HistoryPage(),
+                                              builder: (context) =>
+                                                  HistoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('History'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -907,16 +994,17 @@ class EconomicsPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => SciencePage(),
+                                              builder: (context) =>
+                                                  SciencePage(),
                                             ),
                                           );
                                         },
                                         child: Text('Science'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -925,28 +1013,30 @@ class EconomicsPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => PhilosophyPage(),
+                                              builder: (context) =>
+                                                  PhilosophyPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Philosophy'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
-                              ),]
-                        ),
+                              ),
+                            ]),
                       ),
                       // Scrollable Image Grid
                       Expanded(
                         child: GridView.builder(
                           padding: const EdgeInsets.all(4.0),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 1 / 1,
+                            childAspectRatio: 1 / 1.5,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                           ),
@@ -955,9 +1045,34 @@ class EconomicsPage extends StatelessWidget {
                             // In a real app, you would load images from a service or local assets.
                             return InkWell(
                               onTap: () {
-
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(
+                                        book: snapshot.data![index]),
+                                  ),
+                                );
                               },
-                              child: Image.network(snapshot.data![index].fields.imageLink, fit: BoxFit.cover),
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data![index].fields.imageLink,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          2), // Adjust the spacing between image and text
+                                  Text(
+                                    snapshot.data![index].fields.title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -966,16 +1081,13 @@ class EconomicsPage extends StatelessWidget {
                   );
                 }
               }
-            }
-        )
-    );
+            }));
   }
 }
 
 class HistoryPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse(
-        'http://localhost:8000/xml/json/');
+    var url = Uri.parse('http://localhost:8000/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -987,12 +1099,13 @@ class HistoryPage extends StatelessWidget {
     List<Book> list_book_art = [];
     for (var d in data) {
       if (d != null) {
-        if(d['fields']['categories'] == 'History')
+        if (d['fields']['categories'] == 'History')
           list_book_art.add(Book.fromJson(d));
       }
     }
     return list_book_art;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1017,7 +1130,7 @@ class HistoryPage extends StatelessWidget {
                       Text(
                         "No item data available.",
                         style:
-                        TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
+                            TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -1040,16 +1153,17 @@ class HistoryPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => CategoryPage(),
+                                              builder: (context) =>
+                                                  CategoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('All'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1058,16 +1172,17 @@ class HistoryPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => EconomicsPage(),
+                                              builder: (context) =>
+                                                  EconomicsPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Economics'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -1082,16 +1197,17 @@ class HistoryPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FictionPage(),
+                                              builder: (context) =>
+                                                  FictionPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Fiction'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1106,10 +1222,10 @@ class HistoryPage extends StatelessWidget {
                                         },
                                         child: Text('Art'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1118,19 +1234,18 @@ class HistoryPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => HistoryPage(),
+                                              builder: (context) =>
+                                                  HistoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('History'),
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color(0xFF232831),
+                                            backgroundColor:
+                                                const Color(0xFF232831),
                                             foregroundColor: Colors.white,
                                             side: const BorderSide(
-                                                color: Color(0xFF64CCC5)
-                                            )
-                                        )
-                                    ),
+                                                color: Color(0xFF64CCC5)))),
                                   ),
                                 ],
                               ),
@@ -1145,16 +1260,17 @@ class HistoryPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => SciencePage(),
+                                              builder: (context) =>
+                                                  SciencePage(),
                                             ),
                                           );
                                         },
                                         child: Text('Science'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1163,28 +1279,30 @@ class HistoryPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => PhilosophyPage(),
+                                              builder: (context) =>
+                                                  PhilosophyPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Philosophy'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
-                              ),]
-                        ),
+                              ),
+                            ]),
                       ),
                       // Scrollable Image Grid
                       Expanded(
                         child: GridView.builder(
                           padding: const EdgeInsets.all(4.0),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 1 / 1,
+                            childAspectRatio: 1 / 1.5,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                           ),
@@ -1193,9 +1311,34 @@ class HistoryPage extends StatelessWidget {
                             // In a real app, you would load images from a service or local assets.
                             return InkWell(
                               onTap: () {
-
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(
+                                        book: snapshot.data![index]),
+                                  ),
+                                );
                               },
-                              child: Image.network(snapshot.data![index].fields.imageLink, fit: BoxFit.cover),
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data![index].fields.imageLink,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          2), // Adjust the spacing between image and text
+                                  Text(
+                                    snapshot.data![index].fields.title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -1204,16 +1347,13 @@ class HistoryPage extends StatelessWidget {
                   );
                 }
               }
-            }
-        )
-    );
+            }));
   }
 }
 
 class SciencePage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse(
-        'http://localhost:8000/xml/json/');
+    var url = Uri.parse('http://localhost:8000/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -1225,12 +1365,13 @@ class SciencePage extends StatelessWidget {
     List<Book> list_book_art = [];
     for (var d in data) {
       if (d != null) {
-        if(d['fields']['categories'] == 'Science')
+        if (d['fields']['categories'] == 'Science')
           list_book_art.add(Book.fromJson(d));
       }
     }
     return list_book_art;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1255,7 +1396,7 @@ class SciencePage extends StatelessWidget {
                       Text(
                         "No item data available.",
                         style:
-                        TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
+                            TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -1278,16 +1419,17 @@ class SciencePage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => CategoryPage(),
+                                              builder: (context) =>
+                                                  CategoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('All'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1296,16 +1438,17 @@ class SciencePage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => EconomicsPage(),
+                                              builder: (context) =>
+                                                  EconomicsPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Economics'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -1320,16 +1463,17 @@ class SciencePage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FictionPage(),
+                                              builder: (context) =>
+                                                  FictionPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Fiction'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1344,10 +1488,10 @@ class SciencePage extends StatelessWidget {
                                         },
                                         child: Text('Art'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1356,16 +1500,17 @@ class SciencePage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => HistoryPage(),
+                                              builder: (context) =>
+                                                  HistoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('History'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -1380,19 +1525,18 @@ class SciencePage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => SciencePage(),
+                                              builder: (context) =>
+                                                  SciencePage(),
                                             ),
                                           );
                                         },
                                         child: Text('Science'),
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color(0xFF232831),
+                                            backgroundColor:
+                                                const Color(0xFF232831),
                                             foregroundColor: Colors.white,
                                             side: const BorderSide(
-                                                color: Color(0xFF64CCC5)
-                                            )
-                                        )
-                                    ),
+                                                color: Color(0xFF64CCC5)))),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1401,28 +1545,30 @@ class SciencePage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => PhilosophyPage(),
+                                              builder: (context) =>
+                                                  PhilosophyPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Philosophy'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
-                              ),]
-                        ),
+                              ),
+                            ]),
                       ),
                       // Scrollable Image Grid
                       Expanded(
                         child: GridView.builder(
                           padding: const EdgeInsets.all(4.0),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 1 / 1,
+                            childAspectRatio: 1 / 1.5,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                           ),
@@ -1431,9 +1577,34 @@ class SciencePage extends StatelessWidget {
                             // In a real app, you would load images from a service or local assets.
                             return InkWell(
                               onTap: () {
-
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(
+                                        book: snapshot.data![index]),
+                                  ),
+                                );
                               },
-                              child: Image.network(snapshot.data![index].fields.imageLink, fit: BoxFit.cover),
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data![index].fields.imageLink,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          2), // Adjust the spacing between image and text
+                                  Text(
+                                    snapshot.data![index].fields.title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -1442,16 +1613,13 @@ class SciencePage extends StatelessWidget {
                   );
                 }
               }
-            }
-        )
-    );
+            }));
   }
 }
 
 class PhilosophyPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse(
-        'http://localhost:8000/xml/json/');
+    var url = Uri.parse('http://localhost:8000/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -1463,12 +1631,13 @@ class PhilosophyPage extends StatelessWidget {
     List<Book> list_book_art = [];
     for (var d in data) {
       if (d != null) {
-        if(d['fields']['categories'] == 'Philosophy')
+        if (d['fields']['categories'] == 'Philosophy')
           list_book_art.add(Book.fromJson(d));
       }
     }
     return list_book_art;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1493,7 +1662,7 @@ class PhilosophyPage extends StatelessWidget {
                       Text(
                         "No item data available.",
                         style:
-                        TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
+                            TextStyle(color: Color(0xFF64CCC5), fontSize: 20),
                       ),
                       SizedBox(height: 8),
                     ],
@@ -1516,16 +1685,17 @@ class PhilosophyPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => CategoryPage(),
+                                              builder: (context) =>
+                                                  CategoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('All'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1534,16 +1704,17 @@ class PhilosophyPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => EconomicsPage(),
+                                              builder: (context) =>
+                                                  EconomicsPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Economics'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -1558,16 +1729,17 @@ class PhilosophyPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FictionPage(),
+                                              builder: (context) =>
+                                                  FictionPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Fiction'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1582,10 +1754,10 @@ class PhilosophyPage extends StatelessWidget {
                                         },
                                         child: Text('Art'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1594,16 +1766,17 @@ class PhilosophyPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => HistoryPage(),
+                                              builder: (context) =>
+                                                  HistoryPage(),
                                             ),
                                           );
                                         },
                                         child: Text('History'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -1618,16 +1791,17 @@ class PhilosophyPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => SciencePage(),
+                                              builder: (context) =>
+                                                  SciencePage(),
                                             ),
                                           );
                                         },
                                         child: Text('Science'),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF64CCC5),
+                                          backgroundColor:
+                                              const Color(0xFF64CCC5),
                                           foregroundColor: Colors.white,
-                                        )
-                                    ),
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -1636,31 +1810,31 @@ class PhilosophyPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => PhilosophyPage(),
+                                              builder: (context) =>
+                                                  PhilosophyPage(),
                                             ),
                                           );
                                         },
                                         child: Text('Philosophy'),
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color(0xFF232831),
+                                            backgroundColor:
+                                                const Color(0xFF232831),
                                             foregroundColor: Colors.white,
                                             side: const BorderSide(
-                                                color: Color(0xFF64CCC5)
-                                            )
-                                        )
-                                    ),
+                                                color: Color(0xFF64CCC5)))),
                                   ),
                                 ],
-                              ),]
-                        ),
+                              ),
+                            ]),
                       ),
                       // Scrollable Image Grid
                       Expanded(
                         child: GridView.builder(
                           padding: const EdgeInsets.all(4.0),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 1 / 1,
+                            childAspectRatio: 1 / 1.5,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                           ),
@@ -1669,9 +1843,34 @@ class PhilosophyPage extends StatelessWidget {
                             // In a real app, you would load images from a service or local assets.
                             return InkWell(
                               onTap: () {
-
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailPage(
+                                        book: snapshot.data![index]),
+                                  ),
+                                );
                               },
-                              child: Image.network(snapshot.data![index].fields.imageLink, fit: BoxFit.cover),
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data![index].fields.imageLink,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          2), // Adjust the spacing between image and text
+                                  Text(
+                                    snapshot.data![index].fields.title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -1680,8 +1879,6 @@ class PhilosophyPage extends StatelessWidget {
                   );
                 }
               }
-            }
-        )
-    );
+            }));
   }
 }

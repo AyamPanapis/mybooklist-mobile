@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:mybooklistmobile/models/books.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
@@ -16,6 +21,9 @@ class BookDetailPage extends StatefulWidget {
 class _BookDetailPageState extends State<BookDetailPage> {
   final TextEditingController _reviewController = TextEditingController();
   final List<Map<String, dynamic>> _reviews = [];
+  final int _toread = 0;
+  final int _reading = 1;
+  final int _finished = 2;
 
   void _submitReview() {
     if (_reviewController.text.isNotEmpty) {
@@ -33,6 +41,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.book.fields.title),
@@ -119,21 +128,66 @@ class _BookDetailPageState extends State<BookDetailPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    // Handle to read
+                  onPressed: () async {
+                    final response = await request.postJson(
+                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
+                        jsonEncode(<String, String>{
+                          'num': _toread.toString(),
+                        }));
+                    if (response['status'] == 'success') {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            "Your book has been added to your to read wishlist!"),
+                      ));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content:
+                            Text("Something went wrong, please try again."),
+                      ));
+                    }
                   },
                   child: const Text('To Read'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    // Handle reading
+                  onPressed: () async {
+                    final response = await request.postJson(
+                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
+                        jsonEncode(<String, String>{
+                          'num': _reading.toString(),
+                        }));
+                    if (response['status'] == 'success') {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            "Your book has been added to your reading wishlist!"),
+                      ));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content:
+                            Text("Something went wrong, please try again."),
+                      ));
+                    }
                   },
                   // style: ElevatedButton.styleFrom(primary: Colors.blue),
                   child: const Text('Reading'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    // Handle finish reading
+                  onPressed: () async {
+                    final response = await request.postJson(
+                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
+                        jsonEncode(<String, String>{
+                          'num': _finished.toString(),
+                        }));
+                    if (response['status'] == 'success') {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            "Your book has been added to your finished wishlist!"),
+                      ));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content:
+                            Text("Something went wrong, please try again."),
+                      ));
+                    }
                   },
                   // style: ElevatedButton.styleFrom(primary: Colors.blue),
                   child: const Text('Finish Reading'),
