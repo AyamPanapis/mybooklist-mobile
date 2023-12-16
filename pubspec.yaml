@@ -38,6 +38,7 @@ dependencies:
   provider: ^6.1.1
   pbp_django_auth: ^0.4.0
   http: ^1.1.0
+  smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,9 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - lib/assets/Lovepik_com-401193570-girl-holding-a-book.png
+    - lib/assets/upcoming1.jpeg
+    - lib/assets/upcoming2.png
+    - lib/assets/upcoming3.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
