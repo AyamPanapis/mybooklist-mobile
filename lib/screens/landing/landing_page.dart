@@ -1,6 +1,9 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/landing/item_card.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
+import 'package:mybooklistmobile/repository/books_repository.dart';
+import 'package:mybooklistmobile/screens/book/book_page.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -87,6 +90,27 @@ class MyHomePage extends StatelessWidget {
                           ),
                         ),
                       ),
+                     ),               // Book detail page (for example)
+              ElevatedButton(
+                onPressed: () {
+                  BookRepository().getBook().then((books) {
+                    if (books.isEmpty) {
+                      debugPrint("Book is not found");
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            int randomIndex = Random().nextInt(50);
+
+                            return BookDetailPage(book: books[randomIndex]);
+                          },
+                        ),
+                      );
+                    }
+                  });
+                },
+                child: const Text("Detail Page"),
                     ),
                   ],
                 ),
