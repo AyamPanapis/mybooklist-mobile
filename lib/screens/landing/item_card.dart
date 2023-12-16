@@ -74,12 +74,12 @@ class ShopCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold)),
                 Icon(
                   item.icon,
                   color: Colors.white,
-                  size: 30.0,
+                  size: 25.0,
                 ),
                 const Padding(padding: EdgeInsets.all(3)),
                 Text(

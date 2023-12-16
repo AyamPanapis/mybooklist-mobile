@@ -94,8 +94,8 @@ class MyHomePage extends StatelessWidget {
               GridView.count(
                 primary: true,
                 padding: const EdgeInsets.all(20),
-                crossAxisSpacing: 50,
-                mainAxisSpacing: 50,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
                 crossAxisCount: 3,
                 shrinkWrap: true,
                 children: items.map((ShopItem item) {
