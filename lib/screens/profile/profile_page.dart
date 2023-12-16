@@ -7,6 +7,7 @@ import 'package:mybooklistmobile/widgets/left_drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:mybooklistmobile/models/drawer_models.dart';
+import 'package:mybooklistmobile/screens/book/book_page.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -111,7 +112,7 @@ class BookCategoryPage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: snapshot.data!.map((product) {
                   return Card(
-                    color: const Color(0xFF64CCC5),
+                    color: const Color(0xFF176B87),
                     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     child: Container(
                       width: 250,
