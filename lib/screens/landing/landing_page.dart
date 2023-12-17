@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/landing/item_card.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
 import 'package:mybooklistmobile/screens/landing/upcoming_book.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -11,12 +13,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
-
   final List<ShopItem> items = [
-    ShopItem("Profile", Icons.account_circle_outlined, const Color(0xFF64CCC5), "1"),
-    ShopItem("Category", Icons.category_outlined, const Color(0xFF64CCC5), "2"),
-    ShopItem("Logout", Icons.logout, const Color(0xFF64CCC5), "3"),
+    ShopItem("Profile", Icons.account_circle_outlined, const Color(0xFF64CCC5),
+        false),
+    ShopItem(
+        "Category", Icons.category_outlined, const Color(0xFF64CCC5), false),
+    ShopItem("Logout", Icons.logout, const Color(0xFF64CCC5), true),
+    ShopItem("Login", Icons.login, const Color(0xFF64CCC5), false),
   ];
 
   @override
@@ -85,7 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-
               ComingBook(),
               GridView.count(
                 primary: true,
@@ -94,7 +96,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisSpacing: 10,
                 crossAxisCount: 3,
                 shrinkWrap: true,
-                children: items.map((ShopItem item) {
+                children: items.where((item) {
+                  // Include all items when logged in
+                  if (context.watch<CookieRequest>().loggedIn) {
+                    return item.name != "Login";
+                  } else {
+                    // Include all items except the "Login" button when logged out
+                    return item.name != "Logout";
+                  }
+                }).map((ShopItem item) {
                   return ShopCard(item);
                 }).toList(),
               ),

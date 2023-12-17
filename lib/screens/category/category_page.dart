@@ -45,7 +45,7 @@ class CategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF232831),
+        backgroundColor: const Color(0xFF001C30),
         appBar: AppBar(
           title: Text('Category Page'),
           backgroundColor: const Color(0xFF64CCC5),
@@ -311,7 +311,7 @@ class ArtPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF232831),
+        backgroundColor: const Color(0xFF001C30),
         appBar: AppBar(
           title: Text('Art Page'),
           backgroundColor: const Color(0xFF64CCC5),
@@ -577,7 +577,7 @@ class FictionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF232831),
+        backgroundColor: const Color(0xFF001C30),
         appBar: AppBar(
           title: Text('Fiction Page'),
           backgroundColor: const Color(0xFF64CCC5),
@@ -843,7 +843,7 @@ class EconomicsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF232831),
+        backgroundColor: const Color(0xFF001C30),
         appBar: AppBar(
           title: Text('Economics Page'),
           backgroundColor: const Color(0xFF64CCC5),
@@ -1109,7 +1109,7 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF232831),
+        backgroundColor: const Color(0xFF001C30),
         appBar: AppBar(
           title: Text('History Page'),
           backgroundColor: const Color(0xFF64CCC5),
@@ -1375,7 +1375,7 @@ class SciencePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF232831),
+        backgroundColor: const Color(0xFF001C30),
         appBar: AppBar(
           title: Text('Science Page'),
           backgroundColor: const Color(0xFF64CCC5),
@@ -1641,7 +1641,7 @@ class PhilosophyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF232831),
+        backgroundColor: const Color(0xFF001C30),
         appBar: AppBar(
           title: Text('Philosophy Page'),
           backgroundColor: const Color(0xFF64CCC5),

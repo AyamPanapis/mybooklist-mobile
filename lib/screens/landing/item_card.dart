@@ -6,12 +6,12 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
 class ShopItem {
-  final String name;
+  String name;
   final IconData icon;
   final Color cardColor;
-  final String number;
+  final bool dynamicText;
 
-  ShopItem(this.name, this.icon, this.cardColor, this.number);
+  ShopItem(this.name, this.icon, this.cardColor, this.dynamicText);
 }
 
 class ShopCard extends StatelessWidget {
@@ -33,35 +33,66 @@ class ShopCard extends StatelessWidget {
             ..showSnackBar(SnackBar(
                 content: Text("You pressed the ${item.name} button!")));
 
-         // Navigate to the appropriate route (depending on the button type)
+          // Navigate to the appropriate route (depending on the button type)
           if (item.name == "Profile") {
-            Navigator.push(
+            if (request.loggedIn) {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ProductPage(),
-                ));
+                ),
+              );
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginApp(),
+                ),
+              );
+            }
           } else if (item.name == "Category") {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CategoryPage()));
+            if (request.loggedIn) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CategoryApp(),
+                ),
+              );
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginApp(),
+                ),
+              );
+            }
           } else if (item.name == "Logout") {
-        final response = await request.logout(
-            "http://127.0.0.1:8000/auth/logout_flutter/");
-        String message = response["message"];
-        if (response['status']) {
-          String uname = response["username"];
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("$message Good bye, $uname."),
-          ));
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginApp()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("$message"),
-            ));
+            item.name = "Logout";
+            final response = await request
+                .logout("http://127.0.0.1:8000/auth/logout_flutter/");
+            String message = response["message"];
+            if (response['status']) {
+              String uname = response["username"];
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("$message Good bye, $uname."),
+              ));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginApp()),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("$message"),
+              ));
+            }
+          } else if (item.name == "Login") {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginApp(),
+              ),
+            );
           }
-        }
         },
         child: Container(
           // Container to hold Icon and Text
@@ -70,12 +101,6 @@ class ShopCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(item.number,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold)),
                 Icon(
                   item.icon,
                   color: Colors.white,

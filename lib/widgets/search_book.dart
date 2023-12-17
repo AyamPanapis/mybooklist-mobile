@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
@@ -15,14 +13,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late List<Book> allBooks;
-  late List<Book> displayedBooks;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchBooks();
-  }
+  List<Book> allBooks = [];
+  List<Book> displayedBooks = [];
 
   Future<void> fetchBooks() async {
     var url = Uri.parse('http://localhost:8000/xml/json/');
@@ -42,27 +34,30 @@ class _SearchPageState extends State<SearchPage> {
 
     setState(() {
       allBooks = listBook;
-      displayedBooks = listBook;
     });
   }
 
   void filterBooks(String query) {
+    fetchBooks();
     setState(() {
-      displayedBooks = allBooks
-          .where((book) =>
-              book.fields.title.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      if (query.isEmpty) {
+        displayedBooks = []; // Return an empty list when the query is empty
+      } else {
+        displayedBooks = allBooks
+            .where((book) =>
+                book.fields.title.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
-
     return Scaffold(
       backgroundColor: const Color(0xFF001C30),
       appBar: AppBar(
         title: const Text('Search For Books'),
+        backgroundColor: const Color(0xFF64CCC5),
       ),
       drawer: const LeftDrawer(),
       body: Column(
@@ -74,15 +69,15 @@ class _SearchPageState extends State<SearchPage> {
               decoration: InputDecoration(
                 labelText: 'Search by book title',
                 labelStyle: TextStyle(color: Color(0xFF64CCC5)),
-                prefixIcon: Icon(Icons.search, color: Color(0xFF64CCC5)), 
+                prefixIcon: Icon(Icons.search, color: Color(0xFF64CCC5)),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF64CCC5)), 
+                  borderSide: BorderSide(color: Color(0xFF64CCC5)),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF64CCC5)), 
+                  borderSide: BorderSide(color: Color(0xFF64CCC5)),
                 ),
               ),
-              style: TextStyle(color: Color(0xFF64CCC5)), 
+              style: TextStyle(color: Color(0xFF64CCC5)),
             ),
           ),
           Expanded(
@@ -94,7 +89,6 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   )
                 : ListView.builder(
-                    itemCount: displayedBooks.length,
                     itemBuilder: (_, index) => InkWell(
                       onTap: () {
                         Navigator.push(
@@ -107,6 +101,7 @@ class _SearchPageState extends State<SearchPage> {
                         );
                       },
                       child: Card(
+                        color: const Color(0xFF176B87),
                         elevation: 5,
                         margin: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -136,17 +131,10 @@ class _SearchPageState extends State<SearchPage> {
                                       style: const TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,
+                                        color: Colors.white,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
-                                    Text(
-                                        "${displayedBooks[index].fields.author}"),
-                                    const SizedBox(height: 10),
-                                    Text("${displayedBooks[index].fields.publisher}"),
-                                    const SizedBox(height: 10),
-                                    Text("${displayedBooks[index].fields.description}"),
-                                    const SizedBox(height: 10),
-                                    Text("${displayedBooks[index].fields.categories}"),
                                   ],
                                 ),
                               ),
@@ -155,6 +143,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ),
                     ),
+                    itemCount: displayedBooks.length,
                   ),
           ),
         ],

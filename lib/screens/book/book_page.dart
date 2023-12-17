@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:mybooklistmobile/models/book_review.dart';
 import 'package:mybooklistmobile/models/books.dart';
-import 'package:mybooklistmobile/repository/book_reviews_repository.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:mybooklistmobile/models/reviewbook.dart';
 
 class BookDetailPage extends StatefulWidget {
   final Book book;
@@ -20,67 +20,77 @@ class BookDetailPage extends StatefulWidget {
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
+  List<int> list = <int>[1, 2, 3, 4, 5];
+  int? selectedValue;
   final TextEditingController _reviewController = TextEditingController();
+  final List<Map<String, dynamic>> _reviews = [];
+  final _formKey = GlobalKey<FormState>();
   final int _toread = 0;
   final int _reading = 1;
   final int _finished = 2;
-  double ratingStar = 0.0;
+  String _comment = '';
+  double _rating = 0.0;
 
-  double getAverageRating(List<BookReview> reviewList) {
-    if (reviewList.isEmpty) {
-      return 0;
-    }
-
-    List<int> ratings = reviewList.map((e) => e.rating).toList();
-
-    double ratingTotal = 0.0;
-
-    for (var rating in ratings) {
-      ratingTotal += rating;
-    }
-
-    return ratingTotal / ratings.length.toDouble();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void resetRating() {
-    _reviewController.clear();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return BookDetailPage(book: widget.book);
-        },
-      ),
+  Future<List<Review>> fetchReviews(BuildContext context) async {
+    var url = Uri.parse(
+        'http://127.0.0.1:8000/book/show-review-json/${widget.book.pk}/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
     );
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    List<Review> listProduct = [];
+    for (var d in data) {
+      if (d != null) {
+        listProduct.add(Review.fromJson(d));
+      }
+    }
+    return listProduct;
   }
 
-  void _submitReview() {
-    if (_reviewController.text.isNotEmpty && ratingStar.toInt() > 0) {
-      BookReviewsRepository.createReview(
-              BookReview(
-                  bookId: widget.book.pk,
-                  username: "sss", // username user
-                  rating: ratingStar.toInt(),
-                  comment: _reviewController.text),
-              context)
-          .then((value) => resetRating());
+  Future<String> _getUserName(BuildContext context) async {
+    if (context.read<CookieRequest>().loggedIn) {
+      // Make an HTTP request to get the username
+      var response = await http.get(
+        Uri.parse('http://127.0.0.1:8000/auth/user_data/'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${context.read<CookieRequest>()}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> userData = json.decode(response.body);
+        return userData['username'];
+      } else {
+        // Handle the error, you can return an error message or throw an exception
+        return "Error getting username";
+      }
     } else {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(
-            content: Text("You haven't added a rating or comment yet!")));
+      return "Guest";
     }
+  }
+
+  double calculateAverageRating(List<Review> reviews) {
+    if (reviews.isEmpty) {
+      return 0; // Return 0 if there are no reviews to avoid division by zero
+    }
+
+    double totalRating = 0.0;
+    for (var review in reviews) {
+      totalRating += review.fields.rating.toDouble();
+    }
+
+    double averageRating = totalRating / reviews.length;
+
+    return double.parse(averageRating.toStringAsFixed(2));
   }
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
+      backgroundColor: const Color(0xFF04364A), // Changed background color
       appBar: AppBar(
         title: Text(widget.book.fields.title),
         backgroundColor: const Color(0xFF64CCC5), // Changed AppBar color
@@ -112,46 +122,21 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   Text(
                     "Author: ${widget.book.fields.author}",
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 20.0),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
                   ),
-                 
                   Text(
                     "Publisher: ${widget.book.fields.publisher}",
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 20.0),
+                    style: const TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
                   Text(
                     "Category: ${widget.book.fields.categories.toString().split(".").last}",
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 20.0),
+                    style: const TextStyle(color: Colors.white, fontSize: 20.0),
                   ),
-                  FutureBuilder(
-                    future: BookReviewsRepository.getBookReview(widget.book.pk),
-                    builder: ((context, snapshot) {
-                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                        List<BookReview> bookReviews = snapshot.data!;
-
-                        double averageReview = getAverageRating(bookReviews);
-                        return Text(
-                          "Rating: ${averageReview.toStringAsFixed(2)}",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 20.0),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                        return const Text(
-                          'Rating: n/a',
-                          style: TextStyle(fontSize: 20.0),
-                        );
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                    }),
-                  )
                 ],
               ),
               titleTextStyle: const TextStyle(
@@ -159,18 +144,27 @@ class _BookDetailPageState extends State<BookDetailPage> {
               ),
               subtitleTextStyle: const TextStyle(color: Colors.white),
             ),
-
-            // Star rating and read count
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Text(
-            //     '⭐ ${widget.book.rating ?? "n/a"} (${widget.book.ratingsCount ?? "n/a"})',
-            //     style: TextStyle(
-            //       color: Colors.white,
-            //     ), // This line sets the text color to white
-            //   ),
-            // ),
-
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FutureBuilder<List<Review>>(
+                future: fetchReviews(context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<Review> reviews = snapshot.data ?? [];
+                    return Text(
+                      '⭐ ${calculateAverageRating(reviews)} (${reviews.length} reviews)',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
             // Genres/tags
             // Wrap(
             //   spacing: 8.0,
@@ -196,7 +190,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ElevatedButton(
                   onPressed: () async {
                     final response = await request.postJson(
-                        'http://192.168.1.6:8000/book/wishlist/${widget.book.pk}/',
+                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
                         jsonEncode(<String, String>{
                           'num': _toread.toString(),
                         }));
@@ -217,7 +211,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ElevatedButton(
                   onPressed: () async {
                     final response = await request.postJson(
-                        'http://192.168.1.22:8000/book/wishlist/${widget.book.pk}/',
+                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
                         jsonEncode(<String, String>{
                           'num': _reading.toString(),
                         }));
@@ -239,7 +233,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ElevatedButton(
                   onPressed: () async {
                     final response = await request.postJson(
-                        'http://192.168.1.22:8000/book/wishlist/${widget.book.pk}/',
+                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
                         jsonEncode(<String, String>{
                           'num': _finished.toString(),
                         }));
@@ -260,15 +254,25 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ),
               ],
             ),
-
-            // Review input field
+            const SizedBox(
+              height: 16.0,
+            ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Rate this book!",
+                textAlign: TextAlign.justify,
+                style: const TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+            Form(
+              key: _formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  // Wrapped DropdownButton in Container with a fixed width
                   RatingBar.builder(
-                    initialRating: ratingStar,
+                    initialRating: _rating,
                     tapOnlyMode: true,
                     minRating: 1,
                     direction: Axis.horizontal,
@@ -280,55 +284,79 @@ class _BookDetailPageState extends State<BookDetailPage> {
                       color: Colors.amber,
                     ),
                     onRatingUpdate: (rating) {
-                      ratingStar = rating;
+                      _rating = rating;
                     },
                   ),
                   const SizedBox(
-                    height: 16.0,
+                    height: 8,
                   ),
-                  TextField(
-                    controller: _reviewController,
-                    style: const TextStyle(
-                        color: Colors
-                            .white), // This sets the text the user inputs to white
-                    decoration: InputDecoration(
-                      hintText: 'Submit your review:',
-                      hintStyle: const TextStyle(
-                          color:
-                              Colors.white54), // Light white for the hint text
-                      border: const OutlineInputBorder(),
-                      enabledBorder: const OutlineInputBorder(
-                        // To change the border color when TextField is enabled
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        // To change the border color when TextField is focused
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ), // Icon color set to white
-                        onPressed: _submitReview,
+                  // Expanded TextField to take remaining space
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 16.0),
+                    child: TextField(
+                      controller: _reviewController,
+                      style: const TextStyle(color: Colors.white),
+                      onChanged: (String? value) {
+                        setState(() {
+                          _comment = value!;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Submit your review:',
+                        hintStyle: const TextStyle(color: Colors.white54),
+                        border: const OutlineInputBorder(),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: const Icon(
+                            Icons.send,
+                            color: Colors.white,
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              final response = await request.postJson(
+                                  'http://127.0.0.1:8000/book/add-book-review/${widget.book.pk}/',
+                                  jsonEncode(<String, String>{
+                                    'name': await _getUserName(context),
+                                    'comment': _comment,
+                                    'rating': _rating.toString(),
+                                  }));
+                              if (response['status'] == 'success') {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text("Your review has been added!"),
+                                ));
+                                List<Review> updatedReviews =
+                                    await fetchReviews(context);
+
+                                // Update the state with the new reviews
+                                setState(() {
+                                  _reviews.clear();
+                                  _reviews.addAll(updatedReviews
+                                      .map((review) => review.toJson()));
+                                });
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                      "Something went wrong, please try again."),
+                                ));
+                              }
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-// Submit button
-            // ElevatedButton(
-            //   onPressed: _submitReview,
-            //   // style: ElevatedButton.styleFrom(
-            //   //   primary: Colors.blue, // Button background color
-            //   // ),
-            //   child: const Text(
-            //     'Submit',
-            //   ), // Submit text color set to white
-            // ),
 
-            // Reviews header
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
@@ -340,112 +368,77 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ),
               ),
             ),
-
-// Display reviews with a border and gap
-            FutureBuilder(
-                future: BookReviewsRepository.getBookReview(widget.book.pk),
-                builder: ((context, snapshot) {
-                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    List<BookReview> bookReviews = snapshot.data!;
-
-                    return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: bookReviews.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
-                            child: Row(
+            FutureBuilder<List<Review>>(
+              future: fetchReviews(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator(); // Loading indicator
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  List<Review> reviews = snapshot.data ?? [];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (var review in reviews)
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 8.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: const Color(0xFF04364A),
+                          ),
+                          child: ListTile(
+                            title: Row(
+                              children: [
+                                Text(
+                                  review.fields.userName,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                RatingBar.builder(
+                                  initialRating:
+                                      review.fields.rating.toDouble(),
+                                  itemSize: 16,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: false,
+                                  ignoreGestures: true,
+                                  itemCount: 5,
+                                  itemPadding:
+                                      const EdgeInsets.symmetric(horizontal: 2),
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    _rating = rating;
+                                  },
+                                ),
+                              ],
+                            ),
+                            subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(
-                                  Icons.person,
-                                  color: Colors.white,
-                                ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.3,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        bookReviews[index].username,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            fontSize: 19.0),
-                                      ),
-                                      const SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      RatingBar.builder(
-                                        initialRating: bookReviews[index]
-                                            .rating
-                                            .toDouble(),
-                                        itemSize: 20.0,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        ignoreGestures: true,
-                                        itemCount: 5,
-                                        itemPadding: const EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          ratingStar = rating;
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Text(
-                                        bookReviews[index].comment,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontStyle: FontStyle.italic,
-                                            fontSize: 15.0),
-                                      ),
-                                      const SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      const Divider(),
-                                    ],
+                                Text(
+                                  review.fields.comment,
+                                  style: const TextStyle(
+                                    color: Colors.white,
                                   ),
                                 ),
                               ],
                             ),
-                          );
-                        });
-                  } else if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Belum ada review',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                }))
+                          ),
+                        ),
+                    ],
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
-      backgroundColor: const Color(0xFF04364A), // Changed background color
     );
   }
 }
