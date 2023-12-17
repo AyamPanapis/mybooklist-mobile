@@ -39,6 +39,7 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
@@ -113,7 +114,8 @@ class BookCategoryPage extends StatelessWidget {
                 children: snapshot.data!.map((product) {
                   return Card(
                     color: const Color(0xFF176B87),
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     child: Container(
                       width: 250,
                       padding: const EdgeInsets.all(20.0),
@@ -142,12 +144,14 @@ class BookCategoryPage extends StatelessWidget {
                           const SizedBox(height: 10),
                           Text(
                             "${product.fields.author}",
-                            style: TextStyle(color: Colors.white, fontSize: 18.0),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 18.0),
                           ),
                           const SizedBox(height: 10),
                           Text(
                             "${product.fields.publisher}",
-                            style: TextStyle(color: Colors.white, fontSize: 18.0),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 18.0),
                           ),
                         ],
                       ),
