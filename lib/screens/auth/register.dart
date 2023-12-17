@@ -226,7 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             // Send registration request to Django backend
                             final response = await http.post(
                               Uri.parse(
-                                  'http://127.0.0.1:8000/auth/register_flutter/'),
+                                  'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/register_flutter/'),
                               body: {
                                 'username': username,
                                 'password': password,
@@ -245,8 +245,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                     TextButton(
                                       child: const Text('OK'),
                                       onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginPage()));
                                       },
                                     ),
                                   ],
@@ -294,7 +297,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage()),
+                                      builder: (context) => const LoginApp()),
                                 );
                               },
                               child: const Text(

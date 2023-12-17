@@ -68,8 +68,8 @@ class ShopCard extends StatelessWidget {
             }
           } else if (item.name == "Logout") {
             item.name = "Logout";
-            final response = await request
-                .logout("http://127.0.0.1:8000/auth/logout_flutter/");
+            final response = await request.logout(
+                "https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/logout_flutter/");
             String message = response["message"];
             if (response['status']) {
               String uname = response["username"];

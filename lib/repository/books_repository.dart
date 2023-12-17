@@ -4,7 +4,7 @@ import 'package:mybooklistmobile/models/books.dart';
 
 class BookRepository {
   // Django server ip
-  static String urlApi = 'http://192.168.1.22:8000/';
+  static String urlApi = 'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/';
 
   Future<List<Book>> getBook() async {
     var response = await get(

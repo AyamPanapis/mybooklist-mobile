@@ -17,7 +17,7 @@ class _SearchPageState extends State<SearchPage> {
   List<Book> displayedBooks = [];
 
   Future<void> fetchBooks() async {
-    var url = Uri.parse('http://localhost:8000/xml/json/');
+    var url = Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
