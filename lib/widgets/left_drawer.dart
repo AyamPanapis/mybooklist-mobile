@@ -3,6 +3,7 @@ import 'package:mybooklistmobile/screens/auth/login.dart';
 import 'package:mybooklistmobile/screens/category/category_page.dart';
 import 'package:mybooklistmobile/screens/landing/landing_page.dart';
 import 'package:mybooklistmobile/screens/book/book_page.dart';
+import 'package:mybooklistmobile/widgets/search_book.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:mybooklistmobile/models/drawer_models.dart';
@@ -153,12 +154,12 @@ class _LeftDrawerState extends State<LeftDrawer> {
             ),
             onTap: () async {
               if (request.loggedIn) {
-                //Navigator.pushReplacement(
-                  //context,
-                  //MaterialPageRoute(
-                    //builder: (context) => BookDetailPage(),
-                  //),
-                //);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchPage(),
+                  ),
+                );
               } else {
                 Navigator.pushReplacement(
                   context,
