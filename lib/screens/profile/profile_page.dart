@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mybooklistmobile/models/booklistprofile/readingbooks.dart';
 import 'package:mybooklistmobile/widgets/left_drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:mybooklistmobile/models/drawer_models.dart';
-import 'package:mybooklistmobile/screens/book/book_page.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -17,7 +14,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  @override
   Future<String> fetchUser(BuildContext context) async {
     if (context.read<CookieRequest>().loggedIn) {
       var response = await http.get(

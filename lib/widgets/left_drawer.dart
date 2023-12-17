@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mybooklistmobile/screens/auth/login.dart';
 import 'package:mybooklistmobile/screens/category/category_page.dart';
 import 'package:mybooklistmobile/screens/landing/landing_page.dart';
-import 'package:mybooklistmobile/screens/book/book_page.dart';
+import 'package:mybooklistmobile/widgets/search_book.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:mybooklistmobile/models/drawer_models.dart';
 import 'package:mybooklistmobile/screens/profile/profile_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -97,7 +96,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
               ),
               onTap: () async {
                 if (request.loggedIn) {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProductPage(),
@@ -131,7 +130,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyHomePage(),
+                  builder: (context) => const MyHomePage(),
                 ),
               );
             },
@@ -153,12 +152,12 @@ class _LeftDrawerState extends State<LeftDrawer> {
             ),
             onTap: () async {
               if (request.loggedIn) {
-                //Navigator.pushReplacement(
-                  //context,
-                  //MaterialPageRoute(
-                    //builder: (context) => BookDetailPage(),
-                  //),
-                //);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchPage(),
+                  ),
+                );
               } else {
                 Navigator.pushReplacement(
                   context,
@@ -186,7 +185,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
               ),
               onTap: () async {
                 if (request.loggedIn) {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CategoryPage(),
