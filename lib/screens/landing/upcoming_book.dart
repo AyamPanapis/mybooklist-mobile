@@ -53,7 +53,7 @@ class ComingBook extends StatelessWidget {
                             left: 30,
                             top: 20,
                             child: Text(
-                              'Upcoming Book',
+                              'Upcoming Books',
                               style:
                                   TextStyle(fontSize: 24, color: Colors.white),
                             )),
