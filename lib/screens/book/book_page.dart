@@ -33,7 +33,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
   Future<List<Review>> fetchReviews(BuildContext context) async {
     var url = Uri.parse(
-        'http://127.0.0.1:8000/book/show-review-json/${widget.book.pk}/');
+        'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/book/show-review-json/${widget.book.pk}/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -52,7 +52,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     if (context.read<CookieRequest>().loggedIn) {
       // Make an HTTP request to get the username
       var response = await http.get(
-        Uri.parse('http://127.0.0.1:8000/auth/user_data/'),
+        Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/user_data/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${context.read<CookieRequest>()}',
@@ -190,7 +190,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ElevatedButton(
                   onPressed: () async {
                     final response = await request.postJson(
-                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
+                        'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/book/wishlist/${widget.book.pk}/',
                         jsonEncode(<String, String>{
                           'num': _toread.toString(),
                         }));
@@ -211,7 +211,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ElevatedButton(
                   onPressed: () async {
                     final response = await request.postJson(
-                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
+                        'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/book/wishlist/${widget.book.pk}/',
                         jsonEncode(<String, String>{
                           'num': _reading.toString(),
                         }));
@@ -233,7 +233,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 ElevatedButton(
                   onPressed: () async {
                     final response = await request.postJson(
-                        'http://127.0.0.1:8000/book/wishlist/${widget.book.pk}/',
+                        'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/book/wishlist/${widget.book.pk}/',
                         jsonEncode(<String, String>{
                           'num': _finished.toString(),
                         }));
@@ -320,7 +320,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               final response = await request.postJson(
-                                  'http://127.0.0.1:8000/book/add-book-review/${widget.book.pk}/',
+                                  'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/book/add-book-review/${widget.book.pk}/',
                                   jsonEncode(<String, String>{
                                     'name': await _getUserName(context),
                                     'comment': _comment,

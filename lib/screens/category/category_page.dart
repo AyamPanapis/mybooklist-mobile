@@ -24,7 +24,7 @@ class CategoryApp extends StatelessWidget {
 
 class CategoryPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://localhost:8000/xml/json/');
+    var url = Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -289,7 +289,7 @@ class CategoryPage extends StatelessWidget {
 
 class ArtPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://localhost:8000/xml/json/');
+    var url = Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -555,7 +555,7 @@ class ArtPage extends StatelessWidget {
 
 class FictionPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://localhost:8000/xml/json/');
+    var url = Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -821,7 +821,7 @@ class FictionPage extends StatelessWidget {
 
 class EconomicsPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://localhost:8000/xml/json/');
+    var url = Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -1087,7 +1087,7 @@ class EconomicsPage extends StatelessWidget {
 
 class HistoryPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://localhost:8000/xml/json/');
+    var url = Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -1353,7 +1353,7 @@ class HistoryPage extends StatelessWidget {
 
 class SciencePage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://localhost:8000/xml/json/');
+    var url = Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -1619,7 +1619,7 @@ class SciencePage extends StatelessWidget {
 
 class PhilosophyPage extends StatelessWidget {
   Future<List<Book>> fetchItem() async {
-    var url = Uri.parse('http://localhost:8000/xml/json/');
+    var url = Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/xml/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},

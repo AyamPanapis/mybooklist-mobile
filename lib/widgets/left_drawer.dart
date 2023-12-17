@@ -21,7 +21,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
     if (context.read<CookieRequest>().loggedIn) {
       // Make an HTTP request to get the username
       var response = await http.get(
-        Uri.parse('http://127.0.0.1:8000/auth/user_data/'),
+        Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/user_data/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${context.read<CookieRequest>()}',
@@ -224,8 +224,8 @@ class _LeftDrawerState extends State<LeftDrawer> {
             ),
             onTap: () async {
               if (request.loggedIn) {
-                final response = await request
-                    .logout("http://127.0.0.1:8000/auth/logout_flutter/");
+                final response = await request.logout(
+                    "https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/logout_flutter/");
                 String message = response["message"];
                 if (response['status']) {
                   String uname = response["username"];

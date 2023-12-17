@@ -17,7 +17,7 @@ class _ProductPageState extends State<ProductPage> {
   Future<String> fetchUser(BuildContext context) async {
     if (context.read<CookieRequest>().loggedIn) {
       var response = await http.get(
-        Uri.parse('http://127.0.0.1:8000/auth/user_data/'),
+        Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/user_data/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${context.read<CookieRequest>()}',
@@ -85,11 +85,14 @@ class BookCategoryPage extends StatelessWidget {
   const BookCategoryPage({Key? key, required this.endpoint}) : super(key: key);
 
   Future<List<Product>> fetchProduct(CookieRequest request) async {
-    var data = await request.get('http://127.0.0.1:8000/profile/$endpoint/');
+    var data = await request
+        .get('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/profile/$endpoint/');
     List<Product> list_product = [];
     for (var d in data) {
       if (d != null) {
         list_product.add(Product.fromJson(d));
+      } else {
+        list_product = [];
       }
     }
     return list_product;
