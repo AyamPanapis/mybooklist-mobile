@@ -52,3 +52,5 @@ cd mybooklist-mobile
 flutter run
 ```
 </details>
+
+[![Build status](https://build.appcenter.ms/v0.1/apps/98dbfc6e-493d-450e-b4d0-f2771a683946/branches/main/badge)](https://appcenter.ms)
