@@ -3,7 +3,6 @@ import 'package:mybooklistmobile/screens/auth/login.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:mybooklistmobile/screens/landing/landing_page.dart';
-import 'package:mybooklistmobile/screens/profile/profile_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,10 +24,9 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan.shade400),
             useMaterial3: true,
           ),
-          home: MyHomePage(),
+          home: const MyHomePage(),
           routes: {
             '/auth/login_flutter': (context) => const LoginApp(),
-            'profile/get-planned-flutter/': (context) => const ProductPage(),
           }),
     );
   }

@@ -49,26 +49,11 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 
   Future<String> _getUserName(BuildContext context) async {
-    if (context.read<CookieRequest>().loggedIn) {
-      // Make an HTTP request to get the username
-      var response = await http.get(
-        Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/user_data/'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${context.read<CookieRequest>()}',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        Map<String, dynamic> userData = json.decode(response.body);
-        return userData['username'];
-      } else {
-        // Handle the error, you can return an error message or throw an exception
-        return "Error getting username";
-      }
-    } else {
-      return "Guest";
-    }
+    var response = await context.read<CookieRequest>().get(
+          'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/user_data/',
+        );
+    String uname = response['username'];
+    return uname;
   }
 
   double calculateAverageRating(List<Review> reviews) {
@@ -319,13 +304,15 @@ class _BookDetailPageState extends State<BookDetailPage> {
                           ),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
+                              final uname = await _getUserName(context);
                               final response = await request.postJson(
-                                  'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/book/add-book-review/${widget.book.pk}/',
-                                  jsonEncode(<String, String>{
-                                    'name': await _getUserName(context),
-                                    'comment': _comment,
-                                    'rating': _rating.toString(),
-                                  }));
+                                'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/book/add-book-review/${widget.book.pk}/',
+                                jsonEncode(<String, dynamic>{
+                                  'name': uname,
+                                  'comment': _comment,
+                                  'rating': _rating,
+                                }),
+                              );
                               if (response['status'] == 'success') {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
@@ -339,6 +326,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
                                   _reviews.clear();
                                   _reviews.addAll(updatedReviews
                                       .map((review) => review.toJson()));
+                                  _reviewController.clear();
+                                  _rating = 0.0;
                                 });
                               } else {
                                 ScaffoldMessenger.of(context)

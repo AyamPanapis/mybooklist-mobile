@@ -15,28 +15,16 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   Future<String> fetchUser(BuildContext context) async {
-    if (context.read<CookieRequest>().loggedIn) {
-      var response = await http.get(
-        Uri.parse('https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/user_data/'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${context.read<CookieRequest>()}',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        Map<String, dynamic> userData = json.decode(response.body);
-        return userData['username'];
-      } else {
-        return "Error getting username";
-      }
-    } else {
-      return "Guest";
-    }
+    var response = await context.read<CookieRequest>().get(
+          'https://mybooklist-k1-tk.pbp.cs.ui.ac.id/auth/user_data/',
+        );
+    String uname = response['username'];
+    return uname;
   }
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -53,13 +41,25 @@ class _ProductPageState extends State<ProductPage> {
           title: FutureBuilder<String>(
             future: fetchUser(context),
             builder: (context, AsyncSnapshot<String> userSnapshot) {
-              return Text(
-                userSnapshot.data ?? "Guest",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              );
+              if (request.loggedIn) {
+                // Display the fetched username
+                return Text(
+                  userSnapshot.data ?? "Guest",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              } else {
+                // User is not logged in
+                return Text(
+                  "Guest",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }
             },
           ),
         ),
@@ -104,6 +104,12 @@ class BookCategoryPage extends StatelessWidget {
     return FutureBuilder(
       future: fetchProduct(request),
       builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+        if (!snapshot.hasData ||
+            snapshot.data == null ||
+            snapshot.data!.isEmpty) {
+          // Return a placeholder or nothing when there's no data
+          return const SizedBox.shrink(); // This returns an empty widget
+        }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
